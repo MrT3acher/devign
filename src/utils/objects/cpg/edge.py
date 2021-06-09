@@ -1,4 +1,5 @@
 class Edge:
+	EdgeTypes = ["Ast", "Cfg", "Pdg"]
 	def __init__(self, edge, indentation):
 		self.id = edge["id"].split(".")[-1]
 		self.type = self.id.split("@")[0]

@@ -1,4 +1,4 @@
-from .ast import AST
+from .graph import Graph
 
 
 class Function:
@@ -6,7 +6,9 @@ class Function:
         self.name = function["function"]
         self.id = function["id"].split(".")[-1]
         self.indentation = 1
-        self.ast = AST(function["AST"], self.indentation)
+        '''name ast is misleading its the whole cpg'''
+        self.ast = Graph(function, self.indentation)
+
 
     def __str__(self):
         indentation = self.indentation * "\t"
