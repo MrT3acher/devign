@@ -28,14 +28,14 @@ def graph_indexing(graph):
 
 def joern_parse(joern_path, input_path, output_path, file_name):
     out_file = file_name + ".bin"
-    joern_parse_call = subprocess.run(["./" + joern_path + "joern-parse", input_path, "--out", output_path + out_file],
+    joern_parse_call = subprocess.run([joern_path + "joern-parse", input_path, "-o", output_path + out_file],
                                       stdout=subprocess.PIPE, text=True, check=True)
     print(str(joern_parse_call))
     return out_file
 
 
 def joern_create(joern_path, in_path, out_path, cpg_files):
-    joern_process = subprocess.Popen(["./" + joern_path + "joern"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    joern_process = subprocess.Popen([joern_path + "joern"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     json_files = []
     for cpg_file in cpg_files:
         json_file_name = f"{cpg_file.split('.')[0]}.json"

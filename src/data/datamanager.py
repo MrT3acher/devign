@@ -56,7 +56,7 @@ def tokenize(data_frame: pd.DataFrame):
 
 def to_files(data_frame: pd.DataFrame, out_path):
     # path = f"{self.out_path}/{self.dataset_name}/"
-    os.makedirs(out_path)
+    os.makedirs(out_path, exist_ok=True)
 
     for idx, row in data_frame.iterrows():
         file_name = f"{idx}.c"
