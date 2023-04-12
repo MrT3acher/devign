@@ -28,8 +28,9 @@ def graph_indexing(graph):
 
 def joern_parse(joern_path, input_path, output_path, file_name):
     out_file = file_name + ".bin"
-    joern_parse_call = subprocess.run([joern_path + "joern-parse", input_path, "-o", output_path + out_file],
-                                      stdout=subprocess.PIPE, text=True, check=True)
+    print(joern_path + "joern-parse")
+    joern_parse_call = subprocess.run([joern_path + "joern-parse", input_path, "--out", output_path + out_file],
+                                      stdout=subprocess.PIPE, check=True)
     print(str(joern_parse_call))
     return out_file
 

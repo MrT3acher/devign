@@ -17,7 +17,7 @@
     "create" : {
         "filter_column_value": {"project" : "qemu"},
         "slice_size": 100,
-        "joern_cli_dir": "joern/joern-cli/"
+        "joern_cli_dir": "/home/code/devign/joern/joern-cli/"
     },
     "paths" : {
         "cpg" : "data/cpg/",
