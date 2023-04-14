@@ -79,8 +79,9 @@ class GraphsEmbedding:
     def nodes_connectivity(self, nodes):
         # nodes are ordered by line and column
         coo = [[], []]
-
+        edge_attr = []
         for node_idx, (node_id, node) in enumerate(nodes.items()):
+
             if node_idx != node.order:
                 raise Exception("Something wrong with the order")
 
@@ -95,7 +96,7 @@ class GraphsEmbedding:
                 if edge.node_out in nodes and edge.node_out != node_id:
                     coo[0].append(node_idx)
                     coo[1].append(nodes[edge.node_out].order)
-
+                edge_attr
         return coo
 
 

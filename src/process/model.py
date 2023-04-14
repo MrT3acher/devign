@@ -74,6 +74,7 @@ class Net(nn.Module):
 
     def __init__(self, gated_graph_conv_args, conv_args, emb_size, device):
         super(Net, self).__init__()
+        '''"gated_graph_conv_args": {"out_channels" : 200, "num_layers" : 6, "aggr" : "add", "bias": true},'''
         self.ggc = GatedGraphConv(**gated_graph_conv_args).to(device)
         self.conv = Conv(**conv_args,
                          fc_1_size=gated_graph_conv_args["out_channels"] + emb_size,

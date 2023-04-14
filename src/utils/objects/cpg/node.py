@@ -1,6 +1,7 @@
 from .properties import Properties
 from .edge import Edge
 from ... import log as logger
+import re
 
 node_labels = ["Block", "Call", "Comment", "ControlStructure", "File", "Identifier", "FieldIdentifier", "Literal",
                "Local", "Member", "MetaData", "Method", "MethodInst", "MethodParameterIn", "MethodParameterOut",
@@ -25,8 +26,12 @@ PRINT_PROPS = True
 
 class Node:
     def __init__(self, node, indentation):
-        self.id = node["id"].split(".")[-1]
-        self.label = self.id.split("@")[0]
+        match = re.search(r'\[label=(.*)\s*;\s*id=(\d*)]', node["id"])
+        if match:
+            self.id = match.group(2)
+            self.label = match.group(1)
+        else:
+            raise ("Id and lable not matching regex")
         self.indentation = indentation + 1
         self.properties = Properties(node["properties"], self.indentation)
         self.edges = {edge["id"].split(".")[-1]: Edge(edge, self.indentation) for edge in node["edges"]}
