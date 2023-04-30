@@ -27,14 +27,13 @@ DEVICE = FILES.get_device()
 
 
 def select(dataset):
-    result = dataset.loc[dataset['project'] == "FFmpeg"]
+    # NOTE: dataset rows: 27318
+    # result = dataset.loc[dataset['project'] == "FFmpeg"] # NOTE: just get FFmpeg project rows
+    result = dataset
     len_filter = result.func.str.len() < 1200
     result = result.loc[len_filter]
-    #print(len(result))
-    #result = result.iloc[11001:]
-    #print(len(result))
-    result = result.head(200)
-
+    # NOTE: after filter rows: 15812
+    # result = result.head(200) # NOTE: just get 200 rows
     return result
 
 
@@ -49,6 +48,7 @@ def create_task():
 
     cpg_files = []
     # Create CPG binary files
+    print('Create CPG binary files')
     for s, slice in slices:
         data.to_files(slice, PATHS.joern)
         cpg_file = prepare.joern_parse(context.joern_cli_dir, PATHS.joern, PATHS.cpg, f"{s}_{FILES.cpg}")
@@ -56,8 +56,10 @@ def create_task():
         print(f"Dataset {s} to cpg.")
         shutil.rmtree(PATHS.joern)
     # Create CPG with graphs json files
+    print('Create CPG with graphs json files')
     json_files = prepare.joern_create(context.joern_cli_dir, PATHS.cpg, PATHS.cpg, cpg_files)
     for (s, slice), json_file in zip(slices, json_files):
+        print(s, slice, json_file)
         graphs = prepare.json_process(PATHS.cpg, json_file)
         if graphs is None:
             print(f"Dataset chunk {s} not processed.")

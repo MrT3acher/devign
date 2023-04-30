@@ -29,9 +29,10 @@ def graph_indexing(graph):
 def joern_parse(joern_path, input_path, output_path, file_name):
     out_file = file_name + ".bin"
     print(joern_path + "joern-parse")
-    joern_parse_call = subprocess.run([joern_path + "joern-parse", input_path, "--out", output_path + out_file],
-                                      stdout=subprocess.PIPE, check=True)
-    print(str(joern_parse_call))
+    if not os.path.isfile(output_path + out_file):
+        joern_parse_call = subprocess.run([joern_path + "joern-parse", input_path, "--out", output_path + out_file],
+                                        stdout=subprocess.PIPE, check=True)
+        print(str(joern_parse_call))
     return out_file
 
 
@@ -45,15 +46,24 @@ def joern_create(joern_path, in_path, out_path, cpg_files):
         print(in_path+cpg_file)
         if os.path.exists(in_path+cpg_file):
             json_out = f"{os.path.abspath(out_path)}/{json_file_name}"
+            if os.path.isfile(json_out):
+                continue
+            print(json_out)
+            print(cpg_file)
             import_cpg_cmd = f"importCpg(\"{os.path.abspath(in_path)}/{cpg_file}\")\r".encode()
+            print('toRun: ' + import_cpg_cmd.decode())
             script_path = f"{os.path.dirname(os.path.abspath(joern_path))}/graph-for-funcs.sc"
             run_script_cmd = f"cpg.runScript(\"{script_path}\").toString() |> \"{json_out}\"\r".encode()
+            print('toRun: ' + run_script_cmd.decode())
             joern_process.stdin.write(import_cpg_cmd)
-            print(joern_process.stdout.readline().decode())
+            # print(import_cpg_cmd)
+            # print(joern_process.stdout.readline().decode())
             joern_process.stdin.write(run_script_cmd)
-            print(joern_process.stdout.readline().decode())
+            # print(run_script_cmd)
+            # print(joern_process.stdout.readline().decode())
             joern_process.stdin.write("delete\r".encode())
-            print(joern_process.stdout.readline().decode())
+            # print('delete')
+            # print(joern_process.stdout.readline().decode())
     try:
         outs, errs = joern_process.communicate(timeout=60)
     except subprocess.TimeoutExpired:
@@ -63,6 +73,10 @@ def joern_create(joern_path, in_path, out_path, cpg_files):
         print(f"Outs: {outs.decode()}")
     if errs is not None:
         print(f"Errs: {errs.decode()}")
+    
+    # make json smaller
+    os.system(f'python /home/code/devign/json-minifier.py {os.path.abspath(out_path)}/*.json')
+
     return json_files
 
 
