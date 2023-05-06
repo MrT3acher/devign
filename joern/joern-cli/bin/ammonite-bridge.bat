@@ -41,7 +41,7 @@ set _JAVA_PARAMS=
 set _APP_ARGS=
 
 set "APP_CLASSPATH=%APP_LIB_DIR%\*"
-set "APP_MAIN_CLASS=io.joern.joerncli.console.AmmoniteBridge"
+set "APP_MAIN_CLASS=io.shiftleft.joern.console.AmmoniteBridge"
 set "SCRIPT_CONF_FILE=%APP_HOME%\conf\application.ini"
 
 rem Bundled JRE has priority over standard environment variables

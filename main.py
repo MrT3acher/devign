@@ -117,6 +117,7 @@ def process_task(stopping):
     train_loader, val_loader, test_loader = list(
         map(lambda x: x.get_loader(context.batch_size, shuffle=context.shuffle),
             data.train_val_test_split(input_dataset, shuffle=context.shuffle)))
+    # import IPython; IPython.embed()
     train_loader_step = process.LoaderStep("Train", train_loader, DEVICE)
     val_loader_step = process.LoaderStep("Validation", val_loader, DEVICE)
     test_loader_step = process.LoaderStep("Test", test_loader, DEVICE)

@@ -26,6 +26,8 @@ PRINT_PROPS = True
 
 class Node:
     def __init__(self, node, indentation):
+        # self.id = node["id"].split(".")[-1]
+        # self.label = self.id.split("@")[0]
         match = re.search(r'\[label=(.*)\s*;\s*id=(\d*)]', node["id"])
         if match:
             self.id = match.group(2)

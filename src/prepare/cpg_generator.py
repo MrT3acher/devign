@@ -28,11 +28,13 @@ def graph_indexing(graph):
 
 def joern_parse(joern_path, input_path, output_path, file_name):
     out_file = file_name + ".bin"
-    print(joern_path + "joern-parse")
     if not os.path.isfile(output_path + out_file):
         joern_parse_call = subprocess.run([joern_path + "joern-parse", input_path, "--out", output_path + out_file],
                                         stdout=subprocess.PIPE, check=True)
-        print(str(joern_parse_call))
+
+        with open('./joern-parse.log', 'wb+') as log:
+            log.write(joern_parse_call.stdout)
+            log.write(b'\n')
     return out_file
 
 
@@ -75,7 +77,7 @@ def joern_create(joern_path, in_path, out_path, cpg_files):
         print(f"Errs: {errs.decode()}")
     
     # make json smaller
-    os.system(f'python /home/code/devign/json-minifier.py {os.path.abspath(out_path)}/*.json')
+    # os.system(f'python /home/code/devign/json-minifier.py {os.path.abspath(out_path)}/*.json')
 
     return json_files
 
